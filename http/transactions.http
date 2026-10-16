@@ -1,0 +1,77 @@
+### Transaction Endpoints
+### Run Login in auth.http first, then accounts.http to set accountId and toAccountNumber
+
+# ─── Deposit ──────────────────────────────────────────────────────────────────
+
+POST http://{{host}}/api/accounts/{{accountId}}/transactions/deposit
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "amount": 1000.00,
+  "description": "Initial deposit"
+}
+
+### ─── Withdraw ───────────────────────────────────────────────────────────────
+
+POST http://{{host}}/api/accounts/{{accountId}}/transactions/withdraw
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "amount": 150.00,
+  "description": "ATM withdrawal"
+}
+
+### ─── Withdraw - insufficient funds (should return 422) ─────────────────────
+
+POST http://{{host}}/api/accounts/{{accountId}}/transactions/withdraw
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "amount": 999999.00,
+  "description": "This should fail"
+}
+
+### ─── Transfer ───────────────────────────────────────────────────────────────
+
+POST http://{{host}}/api/accounts/{{accountId}}/transactions/transfer
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "toAccountNumber": "{{toAccountNumber}}",
+  "amount": 250.00,
+  "description": "Transfer to savings"
+}
+
+### ─── Transaction History - all ─────────────────────────────────────────────
+
+GET http://{{host}}/api/accounts/{{accountId}}/transactions
+Authorization: Bearer {{accessToken}}
+
+### ─── Transaction History - deposits only ───────────────────────────────────
+
+GET http://{{host}}/api/accounts/{{accountId}}/transactions?type=DEPOSIT
+Authorization: Bearer {{accessToken}}
+
+### ─── Transaction History - withdrawals only ────────────────────────────────
+
+GET http://{{host}}/api/accounts/{{accountId}}/transactions?type=WITHDRAWAL
+Authorization: Bearer {{accessToken}}
+
+### ─── Transaction History - transfers only ─────────────────────────────────
+
+GET http://{{host}}/api/accounts/{{accountId}}/transactions?type=TRANSFER_DEBIT
+Authorization: Bearer {{accessToken}}
+
+### ─── Transaction History - date range ─────────────────────────────────────
+
+GET http://{{host}}/api/accounts/{{accountId}}/transactions?from=2026-01-01T00:00:00Z&to=2026-12-31T23:59:59Z
+Authorization: Bearer {{accessToken}}
+
+### ─── Transaction History - combined filters ────────────────────────────────
+
+GET http://{{host}}/api/accounts/{{accountId}}/transactions?type=DEPOSIT&from=2026-01-01T00:00:00Z
+Authorization: Bearer {{accessToken}}

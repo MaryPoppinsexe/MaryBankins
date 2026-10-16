@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:17
+    restart: always
+    environment:
+      - POSTGRES_DB=bank
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-vol:/var/lib/postgresql/data
+
+  liquibase:
+    build:
+      context: .
+      dockerfile: liquibase.Dockerfile
+    depends_on:
+      - postgres
+    volumes:
+      - ../src/main/resources/db:/liquibase/changelog
+    command:
+      - --url=jdbc:postgresql://postgres:5432/bank
+      - --username=postgres
+      - --password=postgres
+      - --changelog-file=db.changelog-master.yaml
+      - --search-path=/liquibase/changelog
+      - update
+
+volumes:
+  db-vol:
+    driver: local

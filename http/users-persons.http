@@ -1,0 +1,54 @@
+### User & Person Endpoints
+### Run Login in auth.http first to get the access token
+
+# ─── Update User ──────────────────────────────────────────────────────────────
+
+PATCH http://{{host}}/api/users/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "ownerName": "johndoe_updated",
+  "password": "newpassword123"
+}
+
+### ─── Update User - change status only ──────────────────────────────────────
+
+PATCH http://{{host}}/api/users/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "active": false
+}
+
+### ─── Update Person ──────────────────────────────────────────────────────────
+
+PATCH http://{{host}}/api/persons/{{personId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "firstName": "Jonathan",
+  "email": "jonathan.doe@example.com"
+}
+
+### ─── Get Persons - no filters (all) ───────────────────────────────────────
+
+GET http://{{host}}/api/persons
+Authorization: Bearer {{accessToken}}
+
+### ─── Get Persons - filter by firstName ────────────────────────────────────
+
+GET http://{{host}}/api/persons?firstName=john
+Authorization: Bearer {{accessToken}}
+
+### ─── Get Persons - filter by status ───────────────────────────────────────
+
+GET http://{{host}}/api/persons?status=ACTIVE
+Authorization: Bearer {{accessToken}}
+
+### ─── Get Persons - multiple filters ───────────────────────────────────────
+
+GET http://{{host}}/api/persons?firstName=john&lastName=doe&status=ACTIVE
+Authorization: Bearer {{accessToken}}

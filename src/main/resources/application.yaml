@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: bankolandia
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/bank
+    hikari:
+      pool-name: postgresql-pool
+      connection-timeout: 60000
+  liquibase:
+    change-log: classpath:db/db.changelog-master.yaml
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+jwt:
+  secret: bo38ARHFp0bwKBXsbpJ823t2DfF8uUUlG/j+3J2Vhto=
+  access-token-expiration-ms: 900000
+  refresh-token-expiration-ms: 604800000

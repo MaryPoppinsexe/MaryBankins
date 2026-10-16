@@ -1,0 +1,45 @@
+### Account Endpoints
+### Run Login in auth.http first to get the access token
+
+# ─── Create Account ───────────────────────────────────────────────────────────
+
+# @name createAccount
+POST http://{{host}}/api/accounts
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "userId": "{{userId}}",
+  "label": "Main Account"
+}
+
+> {%
+  client.global.set("accountId", response.body.id);
+  client.global.set("accountNumber", response.body.accountNumber);
+%}
+
+### ─── Create Second Account ─────────────────────────────────────────────────
+
+# @name createSecondAccount
+POST http://{{host}}/api/accounts
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "userId": "{{userId}}",
+  "label": "Savings Account"
+}
+
+> {%
+  client.global.set("toAccountNumber", response.body.accountNumber);
+%}
+
+### ─── Get Account by ID ──────────────────────────────────────────────────────
+
+GET http://{{host}}/api/accounts/{{accountId}}
+Authorization: Bearer {{accessToken}}
+
+### ─── Get All Accounts for User ─────────────────────────────────────────────
+
+GET http://{{host}}/api/accounts/user/{{userId}}
+Authorization: Bearer {{accessToken}}
